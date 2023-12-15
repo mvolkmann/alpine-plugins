@@ -45,3 +45,22 @@ In order for this to work:
      });
    </script>
    ```
+
+Note that `x-for` loop variables are not accessible inside interpolations.
+For example, the following will not work:
+
+```html
+<div x-interp>
+  <template x-for="dog in dogs">
+    <div>{dog.name} is a {dog.breed}.</div>
+  </template>
+</div>
+```
+
+A work around is to continue using `x-text` as follows:
+
+```html
+<template x-for="dog in dogs">
+  <div x-text="`${dog.name} is a ${dog.breed}.`"></div>
+</template>
+```

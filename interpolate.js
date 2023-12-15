@@ -38,7 +38,6 @@ function updateText(re, el, evaluate) {
 document.addEventListener("alpine:init", () => {
   Alpine.directive("interp", (el, {}, { effect, evaluate }) => {
     const re = getRegExp(Alpine.$interpolate.delimiters);
-    console.log("x-interp: re =", re);
     effect(() => updateText(re, el, evaluate));
   });
   Alpine.$interpolate = { delimiters: "{}" };
