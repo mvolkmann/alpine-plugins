@@ -1,5 +1,3 @@
-// TODO: Turn this into an official Alpine plugin.
-
 // These characters must be escaped with a backslash in regular expressions.
 const escapes = "^.?*+[]()\\$";
 

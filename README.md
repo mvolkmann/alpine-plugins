@@ -20,13 +20,13 @@ With this plugin, you can write the following instead:
 
 In order for this to work:
 
-1. Add the following `script` tag:
+1. Add the following `script` tag before the one for alpinejs:
 
    ```html
    <script
      defer
-     src="https://github.com/mvolkmann/alpine-plugins/interpolate.js"
-   />
+     src="https://cdn.jsdelivr.net/gh/mvolkmann/alpine-plugins@main/interpolate.js"
+   ></script>
    ```
 
 1. Add the `x-interp` directive to any element
