@@ -36,10 +36,9 @@ function updateText(re, el, evaluate) {
 }
 
 document.addEventListener("alpine:init", () => {
-  // TODO: Pass to this the delimiters to use, ex. '{{}}' or '{}'.
-  // Have default delimiters, allow the default to be overridden, and allow per-use delimiters.
   Alpine.directive("interp", (el, {}, { effect, evaluate }) => {
     const re = getRegExp(Alpine.$interpolate.delimiters);
+    console.log("x-interp: re =", re);
     effect(() => updateText(re, el, evaluate));
   });
   Alpine.$interpolate = { delimiters: "{}" };
