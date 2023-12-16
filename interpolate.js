@@ -1,3 +1,7 @@
+// This Alpine plugin adds the x-interp directive that enables
+// interpolation of JavaScript expressions in text content.
+// See the README file for details.
+
 // These characters must be escaped with a backslash in regular expressions.
 const escapes = "^.?*+[]()\\$";
 
