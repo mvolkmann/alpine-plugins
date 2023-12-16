@@ -92,13 +92,11 @@ Instances can specify the following x-data properties:
   };
 </script>
 
-<!-- x-data inside a component like this is for component methods.
-     The "props" are supplied by x-data on instances. -->
+<!-- The "props" are supplied by x-data on instances. -->
 <div
   class="progress-bar"
   :style="`background-color: ${typeof bgColor === 'undefined' ? 'gray' : bgColor}`"
   x-init="ProgressBar.validate($data)"
-  x-data
 >
   <div class="bar" :style="ProgressBar.getBarStyle($data)"></div>
   <div class="value" x-text="ProgressBar.getPercent($data)"></div>
