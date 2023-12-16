@@ -20,7 +20,7 @@ makes the `x-data` properties avaialable to it.
 Here is an example of defining such a component
 in the file `progress-bar.html`:
 
-[x-include demo](alpine-x-include.png)
+![x-include demo](/alpine-x-include.png)
 
 ```html
 <!--
