@@ -38,24 +38,27 @@ Instances can specify the following x-data properties:
 - highColor - bar color if value >= high; optional string; no default
 -->
 
-<!-- TODO: These styles are NOT scoped to this component! -->
+<!-- Using nested selector provides CSS scoping.
+     Use the name of the component as the outer CSS class. -->
 <style>
-  .progress-bg {
+  .progress-bar {
     height: 2rem;
     position: relative;
     width: 20rem;
-  }
-  .progress-bar {
-    height: 100%;
-  }
-  .progress-value {
-    color: white;
-    font-family: sans-serif;
-    /* centers text in .progress-bg */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+
+    & .bar {
+      height: 100%;
+    }
+
+    & .value {
+      color: white;
+      font-family: sans-serif;
+      /* centers text in .progress-bg */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 </style>
 
@@ -91,13 +94,13 @@ Instances can specify the following x-data properties:
 <!-- x-data inside a component is for component methods.
      The "props" are supplied by x-data on instances. -->
 <div
-  class="progress-bg"
+  class="progress-bar"
   :style="`background-color: ${typeof bgColor === 'undefined' ? 'gray' : bgColor}`"
   x-init="validate($data)"
   x-data
 >
-  <div class="progress-bar" :style="getBarStyle($data)"></div>
-  <div class="progress-value" x-text="getPercent($data)"></div>
+  <div class="bar" :style="getBarStyle($data)"></div>
+  <div class="value" x-text="getPercent($data)"></div>
 </div>
 ```
 
