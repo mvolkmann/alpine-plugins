@@ -1,4 +1,4 @@
-// This Alpine plugin adds the x-interp directive that enables
+// This Alpine plugin adds the x-interpolate directive that enables
 // interpolation of JavaScript expressions in text content.
 // See the README file for details.
 
@@ -13,7 +13,7 @@ function getRegExp(delimiters) {
   }
   let len = escaped.length;
   if (len % 2 !== 0) {
-    throw new Error(`x-interp invalid delimiters: ${delimiters}`);
+    throw new Error(`x-interpolate invalid delimiters: ${delimiters}`);
   }
   len /= 2;
   const start = escaped.slice(0, len);
@@ -40,7 +40,7 @@ function updateText(re, el, evaluate) {
 }
 
 document.addEventListener("alpine:init", () => {
-  Alpine.directive("interp", (el, {}, { effect, evaluate }) => {
+  Alpine.directive("interpolate", (el, {}, { effect, evaluate }) => {
     const re = getRegExp(Alpine.$interpolate.delimiters);
     effect(() => updateText(re, el, evaluate));
   });
