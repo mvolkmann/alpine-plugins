@@ -63,44 +63,45 @@ Instances can specify the following x-data properties:
 </style>
 
 <script>
-  function getBarStyle(data) {
-    const { color, low, lowColor, high, highColor, value } = data;
-    const barColor =
-      typeof low !== "undefined" && lowColor && value <= low
-        ? lowColor
-        : typeof high !== "undefined" && highColor && value >= high
-        ? highColor
-        : typeof color === "undefined"
-        ? "green"
-        : color;
-    return `background-color: ${barColor}; width: ${getPercent(data)}%`;
-  }
-
-  function getPercent(data) {
-    const { min, max, value } = data;
-    const minimum = typeof min === "undefined" ? 0 : min;
-    const maximum = typeof max === "undefined" ? 100 : max;
-    return Math.round(((value - minimum) / (maximum - minimum)) * 100);
-  }
-
-  function validate(data) {
-    // Check for required properties.
-    if (typeof data.value === "undefined") {
-      throw new Error("progress-bar requires value");
-    }
-  }
+  // Placing all the functions in one global object reduces name conflicts.
+  const ProgressBar = {
+    getBarStyle(data) {
+      const { color, low, lowColor, high, highColor, value } = data;
+      const barColor =
+        typeof low !== "undefined" && lowColor && value <= low
+          ? lowColor
+          : typeof high !== "undefined" && highColor && value >= high
+          ? highColor
+          : typeof color === "undefined"
+          ? "green"
+          : color;
+      return `background-color: ${barColor}; width: ${this.getPercent(data)}%`;
+    },
+    getPercent(data) {
+      const { min, max, value } = data;
+      const minimum = typeof min === "undefined" ? 0 : min;
+      const maximum = typeof max === "undefined" ? 100 : max;
+      return Math.round(((value - minimum) / (maximum - minimum)) * 100);
+    },
+    validate(data) {
+      // Check for required properties.
+      if (typeof data.value === "undefined") {
+        throw new Error("progress-bar requires value");
+      }
+    },
+  };
 </script>
 
-<!-- x-data inside a component is for component methods.
+<!-- x-data inside a component like this is for component methods.
      The "props" are supplied by x-data on instances. -->
 <div
   class="progress-bar"
   :style="`background-color: ${typeof bgColor === 'undefined' ? 'gray' : bgColor}`"
-  x-init="validate($data)"
+  x-init="ProgressBar.validate($data)"
   x-data
 >
-  <div class="bar" :style="getBarStyle($data)"></div>
-  <div class="value" x-text="getPercent($data)"></div>
+  <div class="bar" :style="ProgressBar.getBarStyle($data)"></div>
+  <div class="value" x-text="ProgressBar.getPercent($data)"></div>
 </div>
 ```
 
