@@ -15,7 +15,7 @@ They can be included any number of times as follows:
 
 There must be a file similar to the one below named `component-name.html`.
 This inserts the HTML of the component and
-makes the `x-data` properties avaialable to it.
+makes the `x-data` properties available to it.
 
 Here is an example of defining such a component
 in the file `progress-bar.html`:
