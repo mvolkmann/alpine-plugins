@@ -17,13 +17,20 @@ function includeHTML() {
   const element = document.querySelector(`[${attribute}]`);
   if (!element) return; // no more found
 
-  const xhr = new XMLHttpRequest();
-  xhr.onload = () => {
-    // HTML5 does not dynamically add script tags using the innerHTML property!
-    let text = xhr.responseText;
+  const componentName = element.getAttribute(attribute);
+  let content = _alpineIncludeCache[componentName] || "";
+  if (content) {
+    element.innerHTML = content;
+    element.removeAttribute(attribute);
 
-    let content = _alpineIncludeCache[file] || "";
-    if (!content) {
+    // Make a recursive call to process remaining elements.
+    includeHTML();
+  } else {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+      // HTML5 does not dynamically add script tags using the innerHTML property!
+      let text = xhr.responseText;
+
       let index = 0;
       while (true) {
         // Look for a script tag.
@@ -31,7 +38,10 @@ function includeHTML() {
 
         // TODO: Check for src attribute on script tag.
 
-        if (startIndex !== -1) {
+        if (startIndex === -1) {
+          content += text.substring(index);
+          break;
+        } else {
           const endIndex = text.indexOf(scriptEnd, startIndex);
           if (endIndex !== -1) {
             // Get the text before and in the script element.
@@ -52,28 +62,23 @@ function includeHTML() {
           } else {
             throw new Error("found script start tag, but not end tag");
           }
-        } else {
-          content += text.substring(index);
-          break;
         }
       }
 
-      _alpineIncludeCache[file] = content;
-    }
+      _alpineIncludeCache[componentName] = content;
 
-    // Replace the element text with all the non-script text.
-    element.innerHTML = content;
+      // Replace the element text with all the non-script text.
+      element.innerHTML = content;
 
-    element.removeAttribute(attribute);
+      element.removeAttribute(attribute);
 
-    // Make a recursive call to process remaining elements
-    // with the w3-include-html attribute.
-    includeHTML();
-  };
+      // Make a recursive call to process remaining elements.
+      includeHTML();
+    };
 
-  const file = element.getAttribute(attribute);
-  xhr.open("GET", `${urlPrefix}${file}.html`, true);
-  xhr.send();
+    xhr.open("GET", `${urlPrefix}${componentName}.html`, true);
+    xhr.send();
+  }
 }
 
 window.onload = includeHTML;
