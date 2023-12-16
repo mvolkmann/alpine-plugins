@@ -38,7 +38,7 @@ Instances can specify the following x-data properties:
 - highColor - bar color if value >= high; optional string; no default
 -->
 
-<!-- Using nested selector provides CSS scoping.
+<!-- Using a nested selector provides CSS scoping.
      Use the name of the component as the outer CSS class. -->
 <style>
   .progress-bar {
@@ -119,9 +119,12 @@ Here is an example of using the component defined above:
     </style>
     <script
       defer
+      src="https://cdn.jsdelivr.net/gh/mvolkmann/alpine-plugins@v0.0.2/include.js"
+    ></script>
+    <script
+      defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
-    <script src="x-include.js"></script>
   </head>
   <body x-data="{show: true, temperature: 50}">
     <!-- "value" is a "getter" so it can use other state.
@@ -157,7 +160,7 @@ Here is an example of using the component defined above:
 </html>
 ```
 
-## x-interp
+## x-interpolate
 
 This plugin simplifies inserting the values of JavaScript expressions into text content.
 
@@ -180,11 +183,11 @@ In order for this to work:
    ```html
    <script
      defer
-     src="https://cdn.jsdelivr.net/gh/mvolkmann/alpine-plugins@main/interpolate.js"
+     src="https://cdn.jsdelivr.net/gh/mvolkmann/alpine-plugins@v0.0.3/interpolate.js"
    ></script>
    ```
 
-1. Add the `x-interp` directive to any element
+1. Add the `x-interpolate` directive to any element
    whose contents should be searched for interpolations.
 
 1. Optionally choose different delimiters.
@@ -205,7 +208,7 @@ Note that `x-for` loop variables are not accessible inside interpolations.
 For example, the following will not work:
 
 ```html
-<div x-interp>
+<div x-interpolate>
   <template x-for="dog in dogs">
     <div>{dog.name} is a {dog.breed}.</div>
   </template>
