@@ -17,8 +17,10 @@ There must be a file similar to the one below named `component-name.html`.
 This inserts the HTML of the component and
 makes the `x-data` properties available to it.
 
-Here is an example of defining such a component
-in the file `progress-bar.html`:
+The following is an example of defining such a component
+in the file `progress-bar.html`.
+This must be served by an HTTP server rather than opening it as a file
+in order to avoid CORS issues.
 
 ![x-include demo](/alpine-x-include.png)
 
