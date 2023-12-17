@@ -45,8 +45,7 @@ function updateText(re, el) {
         newElements.push(subtext);
       }
 
-      child.after(...newElements);
-      child.parentElement.removeChild(child);
+      child.replaceWith(...newElements);
     } else if (nodeType === Node.ELEMENT_NODE) {
       if (child.nodeName === "TEMPLATE") {
         for (const templateChild of child.content.childNodes) {
