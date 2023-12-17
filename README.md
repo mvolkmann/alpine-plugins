@@ -183,7 +183,7 @@ In order for this to work:
    ```html
    <script
      defer
-     src="https://cdn.jsdelivr.net/gh/mvolkmann/alpine-plugins@v0.0.3/interpolate.js"
+     src="https://cdn.jsdelivr.net/gh/mvolkmann/alpine-plugins@v0.0.4/interpolate.js"
    ></script>
    ```
 
@@ -197,28 +197,7 @@ In order for this to work:
    add the following `script` tag:
 
    ```html
-   <script defer>
-     document.addEventListener("alpine:init", () => {
-       Alpine.$interpolate.delimiters = "{{}}";
-     });
+   <script>
+     alpineInterpolateDelimiters = "{{}}";
    </script>
    ```
-
-Note that `x-for` loop variables are not accessible inside interpolations.
-For example, the following will not work:
-
-```html
-<div x-interpolate>
-  <template x-for="dog in dogs">
-    <div>{dog.name} is a {dog.breed}.</div>
-  </template>
-</div>
-```
-
-A workaround is to continue using `x-text` as follows:
-
-```html
-<template x-for="dog in dogs">
-  <div x-text="`${dog.name} is a ${dog.breed}.`"></div>
-</template>
-```

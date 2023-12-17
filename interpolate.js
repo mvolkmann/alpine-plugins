@@ -22,27 +22,49 @@ function getRegExp(delimiters) {
   return new RegExp(`${start}(.+?)${end}`, "g");
 }
 
-function updateText(re, el, evaluate) {
+function updateText(re, el) {
   for (const child of el.childNodes) {
     const { nodeType } = child;
     if (nodeType === Node.TEXT_NODE) {
-      if (!child.originalValue) child.originalValue = child.nodeValue;
-      child.nodeValue = child.originalValue.replaceAll(
-        re,
-        // evaluate doesn't throw an error if the expression is invalid.
-        // It outputs an error message and returns undefined.
-        (_, capture) => evaluate(capture) || capture
-      );
+      const text = child.nodeValue;
+      let lastIndex = 0;
+      const newElements = [];
+      for (const match of text.matchAll(re)) {
+        const { 0: captureWithDelimiters, 1: capture, index } = match;
+        if (index > lastIndex) {
+          const subtext = text.slice(lastIndex, index);
+          newElements.push(subtext);
+        }
+        const span = document.createElement("span");
+        span.setAttribute("x-text", capture);
+        newElements.push(span);
+        lastIndex = index + captureWithDelimiters.length;
+      }
+      if (lastIndex < text.length - 1) {
+        const subtext = text.slice(lastIndex);
+        newElements.push(subtext);
+      }
+
+      child.after(...newElements);
+      child.parentElement.removeChild(child);
     } else if (nodeType === Node.ELEMENT_NODE) {
-      updateText(re, child, evaluate); // recursive call
+      if (child.nodeName === "TEMPLATE") {
+        for (const templateChild of child.content.childNodes) {
+          updateText(re, templateChild); // recursive call
+        }
+      } else {
+        updateText(re, child); // recursive call
+      }
     }
   }
 }
 
 document.addEventListener("alpine:init", () => {
-  Alpine.directive("interpolate", (el, {}, { effect, evaluate }) => {
-    const re = getRegExp(Alpine.$interpolate.delimiters);
-    effect(() => updateText(re, el, evaluate));
+  if (typeof alpineInterpolateDelimiters === "undefined") {
+    alpineInterpolateDelimiters = "{}";
+  }
+  Alpine.directive("interpolate", (el, {}, {}) => {
+    const re = getRegExp(alpineInterpolateDelimiters);
+    updateText(re, el);
   });
-  Alpine.$interpolate = { delimiters: "{}" };
 });
